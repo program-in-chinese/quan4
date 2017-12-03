@@ -12162,22 +12162,22 @@ exports.ParseTreeWalker = Tree.ParseTreeWalker;
 const antlr4 = require("antlr4/index")
 const 圈4Lexer = require("./圈4Lexer.js")
 const 圈4Parser = require("./圈4Parser.js")
-const JSListener = require("./定制监听器.js").JSListener
+const 定制监听器 = require("./定制监听器.js").定制监听器
 
 运行();
 
-// TODO: 改进-现为全局
+// TODO: 需改进-现为全局, 由于browserify
 function 运行() {
   var 代码 = document.getElementById('输入代码').value;
-var chars = new antlr4.InputStream(代码)
-var lexer = new 圈4Lexer.圈4Lexer(chars)
-var tokens  = new antlr4.CommonTokenStream(lexer)
-var parser = new 圈4Parser.圈4Parser(tokens)
-parser.buildParseTrees = true
-var tree = parser.程序()
+  var chars = new antlr4.InputStream(代码)
+  var lexer = new 圈4Lexer.圈4Lexer(chars)
+  var tokens  = new antlr4.CommonTokenStream(lexer)
+  var parser = new 圈4Parser.圈4Parser(tokens)
+  parser.buildParseTrees = true
+  var tree = parser.程序()
 
-var extractor = new JSListener()
-antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree)
+  var extractor = new 定制监听器()
+  antlr4.tree.ParseTreeWalker.DEFAULT.walk(extractor, tree)
 }
 
 window.运行 = 运行;
@@ -12459,33 +12459,32 @@ exports.圈4Parser = 圈4Parser;
 var antlr4 = require('antlr4/index');
 const 圈4Listener = require('./圈4Listener.js').圈4Listener
 
-JSListener = function () {
+定制监听器 = function () {
 	圈4Listener.call(this);
 	return this;
 }
 
-JSListener.prototype = Object.create(圈4Listener.prototype);
-JSListener.prototype.constructor = JSListener;
-
-JSListener.prototype.enter程序 = function(ctx) {
-
+定制监听器.prototype = Object.create(圈4Listener.prototype);
+定制监听器.prototype.constructor = 定制监听器;
+/*
+无需接口定义: enter程序/exit程序/enter求约数
+*/
+定制监听器.prototype.exit求约数 = function(上下文) {
+    var 原数 = parseInt(上下文.getChild(1).getText());
+    document.getElementById("输出").innerHTML = 原数 + "的约数: " + 求约数(原数);
 };
 
-JSListener.prototype.exit程序 = function(ctx) {
+function 求约数(原数) {
+  var 约数 = [];
+  for (var i = 1; i < 原数 - 1; i++) {
+    if (原数 % i == 0) {
+      约数.push(i);
+    }
+  }
+  return 约数;
+}
 
-};
-
-JSListener.prototype.enter求约数 = function(ctx) {
-};
-
-JSListener.prototype.exit求约数 = function(ctx) {
-    var t1 = ctx.getChild(0).getText()
-    var t2 = ctx.getChild(1).getText()
-    document.getElementById("spanId").innerHTML = t1 + ": " + t2;
-
-};
-
-exports.JSListener = JSListener;
+exports.定制监听器 = 定制监听器;
 },{"./圈4Listener.js":50,"antlr4/index":42}],53:[function(require,module,exports){
 
 },{}]},{},[48]);
