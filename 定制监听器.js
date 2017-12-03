@@ -12,8 +12,8 @@ const 圈4Listener = require('./圈4Listener.js').圈4Listener
 无需接口定义: enter程序/exit程序/enter求约数
 */
 定制监听器.prototype.exit求约数 = function(上下文) {
-    var 原数 = parseInt(上下文.getChild(1).getText());
-    document.getElementById("输出").innerHTML = 原数 + "的约数: " + 求约数(原数);
+  var 原数 = parseInt(上下文.getChild(1).getText());
+  document.getElementById("输出").innerHTML = 原数 + "的约数: " + 求约数(原数);
 };
 
 function 求约数(原数) {
